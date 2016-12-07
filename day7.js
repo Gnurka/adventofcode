@@ -2028,35 +2028,41 @@ console.log(valids);
 }
 
 function step2() {
-	var aba = /([a-z])(?!\1)([a-z])\1/g;
-  var brackets = /\[\w*\]/g;
-	var aba1 = /([a-z])(?!\1)([a-z])\1(?=.*\[\w*\2\1\2\w*\])/g;
-  var aba2 = /\[\w*([a-z])(?!\1)([a-z])\1\w*\](?=.*\2\1\2)/g;
-  var abaLookAhead = /([a-z])(?!\1)(?=\w\1)/g;
-  
-  var valids = 0;
-  input.split("\n").forEach(function(line) {
-  	var outside = _.compact(_.flatten(line.split(brackets).map(function(o) {
-    	return o.match(abaLookAhead).index;
-    })));
-    console.log(outside);
-    
-    
-    var inside = line.match(brackets);
-    
-    var found = _.find(outside, function(o) {
-    	var bab = o.charAt(1)+o.charAt(0)+o.charAt(1);
-      return _.find(inside, function(i) {
-      	return i.search(bab) >= 0;
-      });
+    var aba = /([a-z])(?!\1)([a-z])\1/g;
+    var brackets = /\[\w*\]/g;
+    var aba1 = /([a-z])(?!\1)([a-z])\1(?=.*\[\w*\2\1\2\w*\])/g;
+    var aba2 = /\[\w*([a-z])(?!\1)([a-z])\1\w*\](?=.*\2\1\2)/g;
+    var abaLookAhead = /([a-z])(?!\1)(?=\w\1)/;
+
+    var valids = 0;
+    input.split("\n").forEach(function (line) {
+        var outside = _.compact(_.flatten(line.split(brackets).map(function (o) {
+            var i = 0;
+            while (i < o.length - 3) {
+                var match = abaLookAhead.exec(o.substring(i));
+            }
+
+        })));
+        console.log(outside);
+
+
+        var inside = line.match(brackets);
+
+        var found = _.find(outside, function (o) {
+            var bab = o.charAt(1) + o.charAt(0) + o.charAt(1);
+            return _.find(inside, function (i) {
+                return i.search(bab) >= 0;
+            });
+        });
+
+        if (found) {
+            valids++;
+        }
     });
-    
-    if (found) {
-    	valids++;
-    }
-  });
-  
-  console.log(valids);
+
+    console.log(valids);
 }
 
-step2();
+$(document).ready(function () {
+    step2();
+});
