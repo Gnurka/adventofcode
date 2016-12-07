@@ -1,0 +1,1 @@
+console.log(http://adventofcode.com/2016/day/6/input);
