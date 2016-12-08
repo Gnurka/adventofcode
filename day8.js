@@ -161,6 +161,11 @@ rotate column x=8 by 1
 rotate column x=2 by 5
 rotate column x=1 by 5`;
 
+var test = `rect 3x2
+rotate column x=1 by 1
+rotate row y=0 by 4
+rotate column x=1 by 1`;
+
 var screen = _.times(6, function (r) {
     return new Array(50).fill(0);
 });
@@ -183,7 +188,15 @@ function rotateRow(b, times, screen) {
 function rotateCol(a, times, screen) {
     var transp = _.zip.apply(_, screen);
     rotateRow(a, times, transp);
-    screen = _.zip.apply(_, transp);
+    return _.zip.apply(_, transp);
+}
+
+function printScreen(screen) {
+    return _.reduce(screen, function (sum, row) {
+        return sum + _.reduce(row, function (sum, col) {
+            return sum + (col == 1 ? "#" : " ");
+        }, "") + "\n";
+    }, "");
 }
 
 function step1() {
@@ -203,7 +216,7 @@ function step1() {
         }
         else if ((i = line.indexOf(ROTCOL)) >= 0) {
             var params = line.substring(i+ROTCOL.length).split(" by ");
-            rotateCol(parseInt(params[0]), parseInt(params[1]), screen);
+            screen = rotateCol(parseInt(params[0]), parseInt(params[1]), screen);
         }
     });
 
@@ -216,6 +229,7 @@ function step1() {
     }, 0);
 
     console.log(res);
+    console.log(printScreen(screen));
 }
 
 $(document).ready(function () {
